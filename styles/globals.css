@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --conic-light: theme(colors.indigo.100);
+    --conic-dark: theme(colors.indigo.800);
+  }
+
+  *:focus {
+    @apply outline-none;
+  }
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary-500;
+  }
+
+  :where(html, body) {
+    @apply min-h-full;
+  }
+
+  :where(button, nav *) {
+    @apply select-none;
+  }
+}
+
+@layer components {
+  :where(.border-orbit-cw, .border-orbit-ccw) {
+    /* Safari bug fix */
+    transform: translateZ(0);
+  }
+  :where(.border-orbit-cw, .border-orbit-ccw)::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    animation: 5s rotate linear infinite;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+  }
+  .border-orbit-cw::before {
+    background: conic-gradient(
+      var(--conic-light) 0deg,
+      var(--conic-dark) 10deg,
+      var(--conic-dark) 335deg,
+      var(--conic-light) 360deg
+    );
+  }
+  .border-orbit-ccw::before {
+    animation-direction: reverse;
+    background: conic-gradient(
+      var(--conic-light) 0deg,
+      var(--conic-dark) 25deg,
+      var(--conic-dark) 350deg,
+      var(--conic-light) 360deg
+    );
+  }
+  :where(.border-orbit-cw, .border-orbit-ccw)::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    box-shadow: inset 0 0 4px -1px black;
+  }
+  :where(.border-orbit-cw, .border-orbit-ccw) > * {
+    background-clip: content-box;
+    padding: 3px;
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(-360deg);
+    }
+    to {
+      transform: rotate(0deg);
+    }
+  }
+}
